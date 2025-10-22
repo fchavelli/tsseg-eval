@@ -1,0 +1,43 @@
+{
+"ActRecTut": {
+    "win_size": 3,
+    "lambda_parameter": 1e-3,
+    "beta": 3000,
+    "threshold": 1e-3
+    },
+
+"MoCap": {
+    "win_size": 5,
+    "lambda_parameter": 1e-3,
+    "beta": 2200,
+    "threshold": 1e-4
+    },
+
+ "PAMAP2": {
+    "win_size": 3,
+    "lambda_parameter": 1e-3,
+    "beta": 3000,
+    "threshold": 1e-4
+    },
+
+"UCRSEG": {
+    "win_size": 3,
+    "lambda_parameter": 1e-3,
+    "beta": 500,
+    "threshold": 1e-3
+    },
+
+"USC-HAD": {
+    "win_size": 3,
+    "lambda_parameter": 1e-3,
+    "beta": 500,
+    "threshold": 1e-3
+    },
+
+"JIGSAWS": {
+    "win_size": 10,
+    "lambda_parameter": 1e-2,
+    "beta": 0,
+    "threshold": 0
+    }
+}

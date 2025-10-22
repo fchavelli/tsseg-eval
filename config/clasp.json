@@ -1,0 +1,43 @@
+{
+"ActRecTut": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.1
+    },
+
+"MoCap": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.04
+    },
+
+"PAMAP2": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.02
+    },
+
+"UCRSEG": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.05
+    },
+
+"USC-HAD": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.02
+    },
+    
+"JIGSAWS": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.02
+    },
+
+"IPGP": {
+    "win_size": 50,
+    "num_cps": 40,
+    "offset": 0.02
+    }
+}

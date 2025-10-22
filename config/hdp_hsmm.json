@@ -1,0 +1,36 @@
+{
+    "ActRecTut": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+    },
+    "MoCap": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+        },
+    
+     "PAMAP2": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+        },
+    
+    "UCRSEG": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+        },
+    
+    "USC-HAD": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+        },
+
+    "JIGSAWS": {
+        "alpha": 1e4,
+        "beta": 20,
+        "n_iter": 20
+        }
+    }

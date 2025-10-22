@@ -1,0 +1,29 @@
+name: seg-eval
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - numba
+  - matplotlib
+  - seaborn
+  - statsmodels
+  - cython
+  - pip:
+      - aeon==1.0.0
+      - bocd==0.1.2
+      - claspy==0.2.5
+      - hmmlearn==0.2.7
+      - npbad==0.1.0
+      - pybasicbayes==0.2.2
+      - pyhsmm==0.1.6
+      - ruptures==1.1.9
+      - stumpy==1.13.0
+      - torch==1.10.2
+      - tslearn==0.6.3
+      - tqdm==4.62.3

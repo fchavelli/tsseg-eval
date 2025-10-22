@@ -1,0 +1,41 @@
+{
+  "workflow-type": "algorithm_execution",
+  "n_jobs": 8,
+  "reraise_errors": true,
+  "do_logging": true,
+  "verbose": true,
+  "do_plotting": true,
+
+  "data": "autoplait/21_01.txt",
+
+  "algorithm": "patss",
+  "parameters": {
+    "pattern_mining": {
+      "alphabet_size": 3
+    }
+  },
+
+  "ActRecTut": {
+    "_comment": "PaTSS with default parameters"
+    },
+
+"MoCap": {
+    "_comment": "PaTSS with default parameters"
+    },
+
+"PAMAP2": {
+    "_comment": "PaTSS with default parameters"
+    },
+
+"UCRSEG": {
+    "_comment": "PaTSS with default parameters"
+    },
+
+"USC-HAD": {
+    "_comment": "PaTSS with default parameters"
+    },
+
+"JIGSAWS": {
+    "_comment": "PaTSS with default parameters"
+    }
+}

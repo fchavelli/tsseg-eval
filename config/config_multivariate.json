@@ -1,0 +1,5 @@
+{
+  "dataset_path": "data",
+  "dataset_names": ["ActRecTut", "MoCap", "UCRSEG", "USC-HAD", "PAMAP2"],
+  "algorithms": ["e2usd", "time2state", "ticc", "clasp", "hdp_hsmm", "patss"]
+}
