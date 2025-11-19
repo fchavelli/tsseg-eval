@@ -1,5 +1,5 @@
 <p align="center">
-<img width="150" src="./assets/SMS_logo.png"/>
+<img width="400" src="./assets/SMS.jpg"/>
 </p>
 
 
