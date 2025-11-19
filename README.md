@@ -15,7 +15,28 @@
 
 
 
-This repository contains code to reproduce the papers results
+Time series segmentation is a fundamental task in analyzing temporal data across various domains, from human activity recognition to energy monitoring. While numerous state-of-the-art methods have been developed to tackle this problem, the evaluation of their performance remains critically limited. Existing measures predominantly focus on change point accuracy or rely on point-based metrics such as Adjusted Rand Index (ARI), which fail to capture the quality of the detected segments, ignore the nature of errors, and offer limited interpretability. In this paper, we address these shortcomings by introducing two novel evaluation measures: WARI (Weighted Adjusted Rand Index), a temporal extension of ARI that accounts for the position of segmentation errors, and SMS (State Matching Score), a fine-grained metric that identifies and scores four distinct and fundamental types of segmentation errors while allowing error-specific weighting. We empirically validate WARI and SMS on synthetic and real-world benchmarks, showing that they not only provide a more accurate assessment of segmentation quality but also uncover insights, such as error provenance and type, that are inaccessible with traditional measures.
+
+## References
+
+If you use SMS or WARI in your project or research, please cite the following paper:
+
+* [NeurIPS'25](https://arxiv.org/pdf/2510.23261)
+
+> "Toward Interpretable Evaluation Measures for Time Series Segmentation"<br/>
+> Félix Chavelli, Paul Boniol, Michaël Thomazo<br/>
+> The Thirty-ninth Annual Conference on Neural Information Processing Systems **(NeurIPS'25)**<br/>
+
+```bibtex
+@inproceedings{
+chavelli2025toward,
+title={Toward Interpretable Evaluation Measures for Time Series Segmentation},
+author={F{\'e}lix Chavelli and Paul Boniol and Micha{\"e}l Thomazo},
+booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+year={2025},
+url={https://openreview.net/forum?id=Gz6dujD5j0}
+}
+```
 
 ## Library Dependencies
 We recommand using a Python>3.9.18 virtual environment using the following dependencies.
