@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: segeval
-Version: 0.1.0
+Version: 0.1.1
 Summary: Evaluation measures for time series segmentation
 Home-page: https://github.com/fchavelli/seg-eval
 Author: Félix Chavelli
@@ -24,7 +24,7 @@ Dynamic: requires-python
 Dynamic: summary
 
 <p align="center">
-<img width="400" src="./assets/SMS.jpg"/>
+<img width="400" src="https://raw.githubusercontent.com/fchavelli/seg-eval/main/assets/SMS.jpg"/>
 </p>
 
 
@@ -65,17 +65,23 @@ url={https://openreview.net/forum?id=Gz6dujD5j0}
 
 ## How to use SegEval
 
-### Option 1: Quick install using pip
+### Option 1: Use the metrics (PyPI package)
+
+To use the evaluation measures (SMS, WARI, etc.) in your own project, you can install the lightweight package via pip:
 
 ```bash
-$ pip install 
+$ pip install segeval
 ```
 
-### Option 2: Install from the source
+### Option 2: Reproduce the paper results
 
-We recommend using a Python 3.9.18 virtual environment with the following dependencies.
+To reproduce the experiments and results presented in the paper, you need to clone this repository and install the full environment.
+
+We recommend using a Python>3.9 virtual environment with the following dependencies.
 
 ```bash
+git clone https://github.com/fchavelli/seg-eval.git
+cd seg-eval
 conda env create -f environment.yml
 conda activate seg-eval
 ```
@@ -86,7 +92,7 @@ conda activate seg-eval
 import numpy as np
 import pandas as pd
 from claspy.segmentation import BinaryClaSPSegmentation
-from ..utils.metrics import *
+from segeval import f1, covering, nmi, ari, wari, sms
 
 def run_clasp(time_series):
     start_time = time.time()
@@ -103,23 +109,23 @@ prediction, elapsed_time = run_clasp(data)
 
 # For Change Point Detection
 # Compute F-score
-f1 = f_score(groundtruth, prediction)
+f1_score = f1(groundtruth, prediction)
 
 # Compute coverage
-cov = covering(groundtruth, prediction)
+cov_score = covering(groundtruth, prediction)
 
 # For State Detection
 # Compute Normalized Mutual Information
-nmi = normalized_mutual_info_score(groundtruth, prediction)
+nmi_score = nmi(groundtruth, prediction)
 
 # Compute Adjusted Rand Index
-ari = adjusted_rand_score(groundtruth, prediction)
+ari_score = ari(groundtruth, prediction)
 
 # Compute Weighted Adjusted Rand Index
-wari = weighted_adjusted_rand_score(groundtruth, prediction)
+wari_score = wari(groundtruth, prediction)
 
 # Compute State Matching Score
-sms = state_matching_score(groundtruth, prediction)
+sms_score = sms(groundtruth, prediction)
 
 ```
 
