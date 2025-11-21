@@ -42,10 +42,10 @@ url={https://openreview.net/forum?id=Gz6dujD5j0}
 
 ### Option 1: Use the metrics (PyPI package)
 
-To use the evaluation measures (SMS, WARI, etc.) in your own project, you can install the lightweight package via pip:
+To use the evaluation measures (SMS, WARI, etc.) in your own project, you can install the (beta) lightweight package via pip:
 
 ```bash
-$ pip install segeval
+$ pip install -i https://test.pypi.org/simple/ segeval
 ```
 
 ### Option 2: Reproduce the paper results
