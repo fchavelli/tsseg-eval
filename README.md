@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/fchavelli/seg-eval/main/assets/tsseg-eval.png"/>
+<img width="400" src="https://raw.githubusercontent.com/fchavelli/seg-eval/main/assets/tsseg-eval-logo.png"/>
 </p>
 
 
