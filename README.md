@@ -45,7 +45,7 @@ url={https://openreview.net/forum?id=Gz6dujD5j0}
 To use the evaluation measures (SMS, WARI, etc.) in your own project, you can install the (beta) lightweight package via pip:
 
 ```bash
-$ pip install tsseg-eval
+$ pip install -i https://test.pypi.org/simple/ tsseg-eval==0.1.2
 ```
 
 ### Option 2: Reproduce the paper results
