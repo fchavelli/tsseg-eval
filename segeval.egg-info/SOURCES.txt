@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.py
+segeval/__init__.py
+segeval/metrics.py
+segeval.egg-info/PKG-INFO
+segeval.egg-info/SOURCES.txt
+segeval.egg-info/dependency_links.txt
+segeval.egg-info/requires.txt
+segeval.egg-info/top_level.txt

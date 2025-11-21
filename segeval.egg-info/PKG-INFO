@@ -1,3 +1,28 @@
+Metadata-Version: 2.4
+Name: segeval
+Version: 0.1.0
+Summary: Evaluation measures for time series segmentation
+Home-page: https://github.com/fchavelli/seg-eval
+Author: Félix Chavelli
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: scikit-learn
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 <p align="center">
 <img width="400" src="./assets/SMS.jpg"/>
 </p>
