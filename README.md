@@ -1,7 +1,6 @@
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/fchavelli/tsseg-eval/main/assets/tsseg-eval-resize.png"/>
+<img width="200" src="https://raw.githubusercontent.com/fchavelli/tsseg-eval/main/assets/tsseg-eval-resize.png"/>
 </p>
-
 
 <h1 align="center">tsseg-eval - Time Series Segmentation Evaluation</h1>
 <h2 align="center"><i>Toward Interpretable Evaluation Measures for Time Series Segmentation</i>, NeurIPS'25</h2>
@@ -48,7 +47,7 @@ url={https://openreview.net/forum?id=Gz6dujD5j0}
 To use the evaluation measures (SMS, WARI, etc.) in your own project, you can install the (beta) lightweight package via pip:
 
 ```bash
-$ pip install -i https://test.pypi.org/simple/ tsseg-eval==0.1.2
+$ pip install tsseg-eval
 ```
 
 ### Option 2: Reproduce the paper results
