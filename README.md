@@ -6,7 +6,7 @@
 <h2 align="center"><i>Toward Interpretable Evaluation Measures for Time Series Segmentation</i>, NeurIPS'25</h2>
 
 <div align="center">
-<a href="https://pypi.org/project/tsseg-eval/"><img src="https://img.shields.io/pypi/v/tsseg-eval?color=5D6D7E&logo=pypi&logoColor=white" alt="PyPI version"></a>
+<a href="https://pypi.org/project/tsseg-eval/"><img src="https://img.shields.io/badge/pypi-v0.1.3-5D6D7E?logo=pypi&logoColor=white" alt="PyPI version"></a>
 <a href="https://github.com/fchavelli/tsseg-eval/blob/main/LICENSE"><img src="https://img.shields.io/github/license/fchavelli/tsseg-eval?color=5D6D7E" alt="License"></a>
 <img src="https://img.shields.io/badge/python-3.6+-5D6D7E.svg?logo=python&logoColor=white" alt="Python Version">
 <a href="https://pepy.tech/project/tsseg-eval"><img src="https://static.pepy.tech/badge/tsseg-eval" alt="Downloads"></a>
