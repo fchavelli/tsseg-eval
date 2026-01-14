@@ -3,7 +3,7 @@
 </p>
 
 
-<h1 align="center">tsseg-eval</h1>
+<h1 align="center">SegEval</h1>
 <h2 align="center">Toward Interpretable Evaluation Measures for Time Series Segmentation</h2>
 <h3 align="center">NeurIPS'25</h3>
 
