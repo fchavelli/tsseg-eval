@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.py
+tsseg_eval/__init__.py
+tsseg_eval/metrics.py
+tsseg_eval.egg-info/PKG-INFO
+tsseg_eval.egg-info/SOURCES.txt
+tsseg_eval.egg-info/dependency_links.txt
+tsseg_eval.egg-info/requires.txt
+tsseg_eval.egg-info/top_level.txt
