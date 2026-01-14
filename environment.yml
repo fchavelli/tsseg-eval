@@ -1,4 +1,4 @@
-name: seg-eval
+name: tsseg-eval
 channels:
   - conda-forge
   - defaults

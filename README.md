@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/fchavelli/seg-eval/main/assets/tsseg-eval-logo-resize.png"/>
+<img width="400" src="https://raw.githubusercontent.com/fchavelli/tsseg-eval/main/assets/tsseg-eval-logo-resize.png"/>
 </p>
 
 
@@ -9,7 +9,7 @@
 
 <div align="center">
 <p>
-<img alt="GitHub issues" src="https://img.shields.io/github/issues/fchavelli/seg-eval">
+<img alt="GitHub issues" src="https://img.shields.io/github/issues/fchavelli/tsseg-eval">
 </p>
 </div>
 
@@ -55,10 +55,10 @@ To reproduce the experiments and results presented in the paper, you need to clo
 We recommend using a Python>3.9 virtual environment with the following dependencies.
 
 ```bash
-git clone https://github.com/fchavelli/seg-eval.git
-cd seg-eval
+git clone https://github.com/fchavelli/tsseg-eval.git
+cd tsseg-eval
 conda env create -f environment.yml
-conda activate seg-eval
+conda activate tsseg-eval
 ```
 
 ### Usage
@@ -67,7 +67,7 @@ conda activate seg-eval
 import numpy as np
 import pandas as pd
 from claspy.segmentation import BinaryClaSPSegmentation
-from segeval import f1, covering, nmi, ari, wari, sms
+from tsseg_eval import f1, covering, nmi, ari, wari, sms
 
 def run_clasp(time_series):
     start_time = time.time()

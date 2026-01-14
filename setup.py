@@ -13,8 +13,8 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author="Félix Chavelli",
-    url="https://github.com/fchavelli/seg-eval", 
-    packages=find_packages(include=["segeval", "segeval.*"]),
+    url="https://github.com/fchavelli/tsseg-eval", 
+    packages=find_packages(include=["tsseg_eval", "tsseg_eval.*"]),
     install_requires=[
         "numpy",
         "scipy",
