@@ -4,6 +4,7 @@ from .metrics import (
     normalized_mutual_info_score as nmi,
     adjusted_rand_score as ari,
     weighted_adjusted_rand_score as wari,
+    weighted_normalized_mutual_info_score as wnmi,
     state_matching_score as sms
 )
 
@@ -13,5 +14,6 @@ __all__ = [
     "nmi",
     "ari",
     "wari",
+    "wnmi",
     "sms"
 ]

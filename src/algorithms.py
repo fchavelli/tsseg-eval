@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import json
 import logging
@@ -8,6 +9,11 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
+# Ensure project root is in sys.path for absolute imports
+_project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 os.environ['NUMPY_EXPERIMENTAL_DTYPE_API'] = '1'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -16,27 +22,27 @@ np.seterr(all='warn')
 
 from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
 
-from ..utils.TSpy.utils import *
-from ..utils.TSpy.label import *
+from utils.TSpy.utils import *
+from utils.TSpy.label import *
 
-from ..utils.metrics import *
-from ..utils import load_dataset
+from utils.metrics import *
+from utils import load_dataset
 from claspy.segmentation import BinaryClaSPSegmentation
-from ..baselines.clasp.test import run_clasp_multivariate
-from ..baselines.ticc.TICC_solver import TICC
-from ..baselines.hdp_hsmm.hdp_hsmm import HDP_HSMM
-from ..baselines.patss.algorithms import PaTSS_perso
-from ..baselines.time2state.src.time2state import Time2State
-from ..baselines.time2state.src.adapers import *
-from ..baselines.time2state.src.clustering import *
-from ..baselines.time2state.src.default_params import *
+from baselines.clasp.test import run_clasp_multivariate
+from baselines.ticc.TICC_solver import TICC
+from baselines.hdp_hsmm.hdp_hsmm import HDP_HSMM
+from baselines.patss.algorithms import PaTSS_perso
+from baselines.time2state.src.time2state import Time2State
+from baselines.time2state.src.adapers import *
+from baselines.time2state.src.clustering import *
+from baselines.time2state.src.default_params import *
 
-from ..baselines.E2USD.e2usd import E2USD
-from ..baselines.E2USD.adapers import *
-from ..baselines.E2USD.utils import *
-from ..baselines.E2USD.clustering import *
-from ..baselines.E2USD.params import *
-from ..baselines.E2USD.networks import *
+from baselines.E2USD.e2usd import E2USD
+from baselines.E2USD.adapers import *
+from baselines.E2USD.utils import *
+from baselines.E2USD.clustering import *
+from baselines.E2USD.params import *
+from baselines.E2USD.networks import *
 
 def save_prediction(analysis_type, algorithm_name, dataset_name, ts_info, prediction):
     ts_info = '_' + '_'.join(map(str, ts_info)) + '.npy'
@@ -52,8 +58,8 @@ def save_results(analysis_type, results_df, dataset_name, ts_info, evaluate, gro
             f1, cov = run_evaluation(analysis_type, groundtruth, prediction)
             results_df = pd.concat([results_df, pd.DataFrame([{'dataset': ts, 'time': elapsed_time, 'f1': f1, 'covering': cov}])], ignore_index=True)
         else:
-            f1, cov, nmi, ari, wari, cms = run_evaluation(analysis_type, groundtruth, prediction)
-            results_df = pd.concat([results_df, pd.DataFrame([{'dataset': ts, 'time': elapsed_time, 'f1': f1, 'covering': cov, 'nmi': nmi, 'ari': ari, 'wari': wari, 'cms': cms,}])], ignore_index=True)
+            f1, cov, nmi, ari, wari, sms = run_evaluation(analysis_type, groundtruth, prediction)
+            results_df = pd.concat([results_df, pd.DataFrame([{'dataset': ts, 'time': elapsed_time, 'f1': f1, 'covering': cov, 'nmi': nmi, 'ari': ari, 'wari': wari, 'sms': sms}])], ignore_index=True)
     else:
         results_df = pd.concat([results_df, pd.DataFrame([{'dataset': ts, 'time': elapsed_time}])], ignore_index=True)
     return results_df
@@ -111,43 +117,39 @@ def run_experiment(analysis_type, algorithm_name, dataset_name, data, evaluate=F
 
 def run_algorithm(analysis_type, algorithm_name, data, n_states=None):
 
-    if algorithm_name == 'patss':
-        prediction, _, elapsed_time = run_patss(data)
-    if algorithm_name == 'clasp':
-        prediction, elapsed_time = run_clasp(data)
-    if algorithm_name == 'fluss':
-        prediction, elapsed_time = run_fluss(data)
-    if algorithm_name == 'pelt':
-        prediction, elapsed_time = run_pelt(data)
-    if algorithm_name == 'binseg':
-        prediction, elapsed_time = run_binseg(data)
-    if algorithm_name == 'window':
-        prediction, elapsed_time = run_window(data)
-    if algorithm_name == 'hidalgo':
-        prediction, elapsed_time = run_hidalgo(data)
-    if algorithm_name == 'bocd':
-        prediction, elapsed_time = run_bocd(data)
-
     if algorithm_name == 'clasp':
         if analysis_type == 'univariate':
             prediction, elapsed_time = run_clasp(data)
         else:
             prediction, elapsed_time = run_clasp_multi(data, window_size=win_size, num_cps=num_cps, n_states=n_states, offset=offset)
-
-    if algorithm_name == 'patss':
+    elif algorithm_name == 'patss':
         _, prediction, elapsed_time = run_patss(data)
-    if algorithm_name == 'autoplait':
+    elif algorithm_name == 'fluss':
+        prediction, elapsed_time = run_fluss(data)
+    elif algorithm_name == 'pelt':
+        prediction, elapsed_time = run_pelt(data)
+    elif algorithm_name == 'binseg':
+        prediction, elapsed_time = run_binseg(data)
+    elif algorithm_name == 'window':
+        prediction, elapsed_time = run_window(data)
+    elif algorithm_name == 'hidalgo':
+        prediction, elapsed_time = run_hidalgo(data)
+    elif algorithm_name == 'bocd':
+        prediction, elapsed_time = run_bocd(data)
+    elif algorithm_name == 'autoplait':
         prediction, elapsed_time = run_autoplait(data)
-    if algorithm_name == 'ticc':
+    elif algorithm_name == 'ticc':
         prediction, elapsed_time = run_ticc(data, window_size=win_size, number_of_clusters=n_states, lambda_parameter=lambda_parameter, beta=beta, threshold=threshold)
-    if algorithm_name == 'hvgh':
+    elif algorithm_name == 'hvgh':
         prediction, elapsed_time = run_hvgh(data, window_size=100)
-    if algorithm_name == 'hdp_hsmm':
+    elif algorithm_name == 'hdp_hsmm':
         prediction, elapsed_time = run_hdp_hsmm(data, alpha, beta, n_iter)
-    if algorithm_name == 'time2state':
+    elif algorithm_name == 'time2state':
         prediction, elapsed_time = run_time2state(data, in_channels, out_channels, win_size, step, M, N, nb_steps)
-    if algorithm_name == 'e2usd':
+    elif algorithm_name == 'e2usd':
         prediction, elapsed_time = run_e2usd(data, in_channels, out_channels, win_size, step)
+    else:
+        raise ValueError(f"Unknown algorithm: {algorithm_name}")
 
     return prediction, elapsed_time
 
@@ -164,8 +166,8 @@ def run_evaluation(analysis_type, groundtruth, prediction):
         nmi = normalized_mutual_info_score(groundtruth, prediction)
         ari = adjusted_rand_score(groundtruth, prediction)
         wari = weighted_adjusted_rand_score(groundtruth, prediction)
-        cms = common_matching_sequence(groundtruth, prediction)
-        return f1, cov, nmi, ari, wari, cms
+        sms = state_matching_score(groundtruth, prediction)
+        return f1, cov, nmi, ari, wari, sms
 
 
 def run_patss(time_series):

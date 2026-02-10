@@ -1,9 +1,32 @@
 import numpy as np
 import scipy.sparse as sp
 from scipy.optimize import linear_sum_assignment
-from sklearn.metrics.cluster._supervised import mutual_info_score, entropy, _generalized_average
-from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
+from sklearn.metrics import mutual_info_score, adjusted_rand_score, normalized_mutual_info_score
 from typing import List, Tuple, Dict, Union, Optional, Set, Any, Iterable
+
+
+def _entropy(labels: np.ndarray) -> float:
+    """Compute the entropy of a label array."""
+    pi = np.bincount(np.asarray(labels, dtype=int))
+    pi = pi[pi > 0].astype(np.float64)
+    pi_sum = np.sum(pi)
+    return -np.sum((pi / pi_sum) * (np.log(pi) - np.log(pi_sum)))
+
+
+def _generalized_average(a: float, b: float, average_method: str) -> float:
+    """Compute a generalized average of two values."""
+    if average_method == "min":
+        return min(a, b)
+    elif average_method == "geometric":
+        return np.sqrt(a * b)
+    elif average_method == "arithmetic":
+        return (a + b) / 2.0
+    elif average_method == "max":
+        return max(a, b)
+    else:
+        raise ValueError(
+            f"'average_method' must be 'min', 'geometric', 'arithmetic', or 'max', got {average_method}"
+        )
 
 '''
 F1 & Covering scores
@@ -367,7 +390,7 @@ def weighted_normalized_mutual_info_score(labels_true: Iterable[int], labels_pre
         return 0.0
 
     # Calculate entropy for each labeling
-    h_true, h_pred = entropy(labels_true), entropy(labels_pred)
+    h_true, h_pred = _entropy(labels_true), _entropy(labels_pred)
 
     normalizer = _generalized_average(h_true, h_pred, average_method)
     return mi / normalizer

@@ -1,8 +1,32 @@
 import numpy as np
 
-import scipy.sparse as sp                                                                               # Supplementary packages for WARI
-from scipy.optimize import linear_sum_assignment                                                        # Supplementary packages for SMS
-from sklearn.metrics.cluster._supervised import mutual_info_score, entropy, _generalized_average        # Supplementary packages for WNMI
+import scipy.sparse as sp
+from scipy.optimize import linear_sum_assignment
+from sklearn.metrics import mutual_info_score
+
+
+def _entropy(labels):
+    """Compute the entropy of a label array."""
+    pi = np.bincount(np.asarray(labels, dtype=int))
+    pi = pi[pi > 0].astype(np.float64)
+    pi_sum = np.sum(pi)
+    return -np.sum((pi / pi_sum) * (np.log(pi) - np.log(pi_sum)))
+
+
+def _generalized_average(a, b, average_method):
+    """Compute a generalized average of two values."""
+    if average_method == "min":
+        return min(a, b)
+    elif average_method == "geometric":
+        return np.sqrt(a * b)
+    elif average_method == "arithmetic":
+        return (a + b) / 2.0
+    elif average_method == "max":
+        return max(a, b)
+    else:
+        raise ValueError(
+            f"'average_method' must be 'min', 'geometric', 'arithmetic', or 'max', got {average_method}"
+        )
 
 '''
 F1 & Covering scores
@@ -96,11 +120,14 @@ def f_score(annotation, predictions, margin=None, alpha=0.5, return_PR=False):
     TP = true_positives(T, X, margin=margin)
     
     # Compute precision and recall
-    P = len(TP) / len(X)
-    R = len(TP) / len(T)
+    P = len(TP) / len(X) if len(X) > 0 else 0.0
+    R = len(TP) / len(T) if len(T) > 0 else 0.0
     
     # Compute the F-measure using the weighted harmonic mean
-    F = P * R / (alpha * R + (1 - alpha) * P)
+    if P + R == 0:
+        F = 0.0
+    else:
+        F = P * R / (alpha * R + (1 - alpha) * P)
     
     if return_PR:
         return F, P, R
@@ -451,7 +478,7 @@ def weighted_normalized_mutual_info_score(labels_true, labels_pred, distance=lin
         return 0.0
 
     # Calculate entropy for each labeling
-    h_true, h_pred = entropy(labels_true), entropy(labels_pred)
+    h_true, h_pred = _entropy(labels_true), _entropy(labels_pred)
 
     normalizer = _generalized_average(h_true, h_pred, average_method)
     return mi / normalizer

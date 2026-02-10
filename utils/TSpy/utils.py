@@ -12,7 +12,8 @@ def remove_constant_col(df):
     return pd.DataFrame(data)
 
 def len_of_file(path):
-    return len(open(path,'rU').readlines())
+    with open(path, 'r') as f:
+        return len(f.readlines())
 
 def batch_z_normalize(data_tensor):
     result = np.empty(shape=data_tensor.shape)
