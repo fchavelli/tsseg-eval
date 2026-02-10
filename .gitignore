@@ -141,3 +141,4 @@ cython_debug/
 data/*
 !data/README.md
 results/
+ideas/
