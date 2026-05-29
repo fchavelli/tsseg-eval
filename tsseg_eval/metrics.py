@@ -96,11 +96,13 @@ def f_score(annotation: Iterable[int], predictions: Iterable[int], margin: Optio
         The F-measure (and optionally precision and recall).
     """
 
+    n = len(list(annotation))
     annotation_cps = labels_to_change_points(annotation)
     predictions_cps = labels_to_change_points(predictions)
 
     if margin is None:
-        margin = int(0.01 * len(annotation_cps))
+        # Use 1% of the series length so the tolerance scales with the data.
+        margin = max(1, int(0.01 * n))
 
     # Ensure that 0 is included in both true annotations and predictions
     T = set(annotation_cps)
@@ -558,7 +560,15 @@ def atomicity(sequence: np.ndarray) -> int:
         sequence_atomicity = 0
     return sequence_atomicity
 
-def state_matching_score(labels_true: Iterable[int], labels_pred: Iterable[int], weights: Dict[str, float] = {'delay': 0.1, 'transition': 0.3, 'isolation': 0.8, 'missing': 0.5}, return_mapped: bool = False, return_errors: bool = False) -> Union[float, Tuple[float, np.ndarray], Tuple[float, List[Dict[str, Any]]], Tuple[float, np.ndarray, List[Dict[str, Any]]], None]:
+DEFAULT_SMS_WEIGHTS: Dict[str, float] = {
+    'delay': 0.1,
+    'transition': 0.3,
+    'isolation': 0.8,
+    'missing': 0.5,
+}
+
+
+def state_matching_score(labels_true: Iterable[int], labels_pred: Iterable[int], weights: Optional[Dict[str, float]] = None, return_mapped: bool = False, return_errors: bool = False) -> Union[float, Tuple[float, np.ndarray], Tuple[float, List[Dict[str, Any]]], Tuple[float, np.ndarray, List[Dict[str, Any]]]]:
     """
     Computes a new State Matching Score (SMS) based on identifying and classifying
     error segments between true and predicted label sequences after optimal mapping.
@@ -594,11 +604,13 @@ def state_matching_score(labels_true: Iterable[int], labels_pred: Iterable[int],
             - If return_mapped is True and return_errors is True: (score, mapped_pred, errors_list).
             Returns None if input is empty.
     """
+    if weights is None:
+        weights = DEFAULT_SMS_WEIGHTS
     labels_true = np.asarray(labels_true)
     labels_pred = np.asarray(labels_pred)
     n = len(labels_true)
     if n == 0:
-        return None # Return None for empty input
+        raise ValueError("state_matching_score requires non-empty label sequences.")
 
     # Map predicted labels to true labels
     mapped_pred = map_predicted_labels(labels_true, labels_pred)

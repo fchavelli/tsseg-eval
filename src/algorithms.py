@@ -9,10 +9,14 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-# Ensure project root is in sys.path for absolute imports
+# Ensure project root is in sys.path for absolute imports.
+# We also expose ``utils/`` directly so that vendored baselines that import
+# ``TSpy`` (e.g. ``from TSpy.utils import ...``) keep working.
 _project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if _project_root not in sys.path:
-    sys.path.insert(0, _project_root)
+_utils_dir = os.path.join(_project_root, 'utils')
+for _p in (_project_root, _utils_dir):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 os.environ['NUMPY_EXPERIMENTAL_DTYPE_API'] = '1'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -78,7 +82,8 @@ def run_experiment(analysis_type, algorithm_name, dataset_name, data, evaluate=F
             dataset, window_size, true_cps, data = row['dataset'], row['window_size'], row['change_points'], row['time_series']
             # window_size = np.int64(window_size)
             # change_points = np.asarray(change_points, dtype=np.int64)
-            data = np.fromstring(data.strip('[]'), sep=',', dtype=np.float64)
+            # np.fromstring(...) for text input was removed in NumPy 2.
+            data = np.array([float(x) for x in data.strip('[]').split(',') if x.strip()], dtype=np.float64)
             logging.info(f"Running algorithm: {algorithm_name} on TS: {dataset}")
 
             change_points, elapsed_time = run_algorithm(analysis_type, algorithm_name, data)
@@ -90,7 +95,10 @@ def run_experiment(analysis_type, algorithm_name, dataset_name, data, evaluate=F
         config_path = Path(f"config/{algorithm_name}.json")
         with open(config_path, 'r') as config_file:
             config = json.load(config_file)
-        globals().update(config[dataset_name])
+        # Per-dataset hyperparameters; passed explicitly to run_algorithm instead
+        # of being injected into module globals.
+        params = dict(config.get(dataset_name, {}))
+        params.pop('_comment', None)
 
         for data, groundtruth, infos in load_dataset.load_data(dataset_name):
 
@@ -103,25 +111,33 @@ def run_experiment(analysis_type, algorithm_name, dataset_name, data, evaluate=F
 
             if dataset_name == 'UCRSEG':
                 if algorithm_name == 'ticc':
-                    groundtruth = groundtruth[win_size:]
+                    groundtruth = groundtruth[params['win_size']:]
                 else:
                     groundtruth = groundtruth[:-1]
-            
+
             n_states = len(set(groundtruth)) if groundtruth is not None else None
 
-            prediction, elapsed_time = run_algorithm(analysis_type, algorithm_name, data, n_states=n_states)
+            prediction, elapsed_time = run_algorithm(
+                analysis_type, algorithm_name, data, n_states=n_states, **params
+            )
             save_prediction(analysis_type, algorithm_name, dataset_name, infos, prediction)
             results_df = save_results(analysis_type, results_df, dataset_name, infos, evaluate, groundtruth, prediction, elapsed_time)
 
     return results_df
 
-def run_algorithm(analysis_type, algorithm_name, data, n_states=None):
+def run_algorithm(analysis_type, algorithm_name, data, n_states=None, **params):
 
     if algorithm_name == 'clasp':
         if analysis_type == 'univariate':
             prediction, elapsed_time = run_clasp(data)
         else:
-            prediction, elapsed_time = run_clasp_multi(data, window_size=win_size, num_cps=num_cps, n_states=n_states, offset=offset)
+            prediction, elapsed_time = run_clasp_multi(
+                data,
+                window_size=params['win_size'],
+                num_cps=params['num_cps'],
+                n_states=n_states,
+                offset=params['offset'],
+            )
     elif algorithm_name == 'patss':
         _, prediction, elapsed_time = run_patss(data)
     elif algorithm_name == 'fluss':
@@ -139,15 +155,39 @@ def run_algorithm(analysis_type, algorithm_name, data, n_states=None):
     elif algorithm_name == 'autoplait':
         prediction, elapsed_time = run_autoplait(data)
     elif algorithm_name == 'ticc':
-        prediction, elapsed_time = run_ticc(data, window_size=win_size, number_of_clusters=n_states, lambda_parameter=lambda_parameter, beta=beta, threshold=threshold)
+        prediction, elapsed_time = run_ticc(
+            data,
+            window_size=params['win_size'],
+            number_of_clusters=n_states,
+            lambda_parameter=params['lambda_parameter'],
+            beta=params['beta'],
+            threshold=params['threshold'],
+        )
     elif algorithm_name == 'hvgh':
         prediction, elapsed_time = run_hvgh(data, window_size=100)
     elif algorithm_name == 'hdp_hsmm':
-        prediction, elapsed_time = run_hdp_hsmm(data, alpha, beta, n_iter)
+        prediction, elapsed_time = run_hdp_hsmm(
+            data, params['alpha'], params['beta'], params['n_iter']
+        )
     elif algorithm_name == 'time2state':
-        prediction, elapsed_time = run_time2state(data, in_channels, out_channels, win_size, step, M, N, nb_steps)
+        prediction, elapsed_time = run_time2state(
+            data,
+            params['in_channels'],
+            params['out_channels'],
+            params['win_size'],
+            params['step'],
+            params['M'],
+            params['N'],
+            params['nb_steps'],
+        )
     elif algorithm_name == 'e2usd':
-        prediction, elapsed_time = run_e2usd(data, in_channels, out_channels, win_size, step)
+        prediction, elapsed_time = run_e2usd(
+            data,
+            params['in_channels'],
+            params['out_channels'],
+            params['win_size'],
+            params['step'],
+        )
     else:
         raise ValueError(f"Unknown algorithm: {algorithm_name}")
 

@@ -7,9 +7,9 @@
 
 <div align="center">
 <a href="https://arxiv.org/abs/2510.23261"><img src="https://img.shields.io/badge/arXiv-2510.23261-b31b1b?logo=arxiv&logoColor=white" alt="arXiv"></a>
-<a href="https://pypi.org/project/tsseg-eval/"><img src="https://img.shields.io/badge/pypi-v0.1.3-5D6D7E?logo=pypi&logoColor=white" alt="PyPI version"></a>
+<a href="https://pypi.org/project/tsseg-eval/"><img src="https://img.shields.io/badge/pypi-v0.1.4-5D6D7E?logo=pypi&logoColor=white" alt="PyPI version"></a>
 <a href="https://github.com/fchavelli/tsseg-eval/blob/main/LICENSE"><img src="https://img.shields.io/github/license/fchavelli/tsseg-eval?color=5D6D7E" alt="License"></a>
-<img src="https://img.shields.io/badge/python-3.6+-5D6D7E.svg?logo=python&logoColor=white" alt="Python Version">
+<img src="https://img.shields.io/badge/python-3.9+-5D6D7E.svg?logo=python&logoColor=white" alt="Python Version">
 <a href="https://pepy.tech/project/tsseg-eval"><img src="https://static.pepy.tech/badge/tsseg-eval" alt="Downloads"></a>
 <br/>
 <img src="https://img.shields.io/github/issues/fchavelli/tsseg-eval?color=5D6D7E&logo=github&logoColor=white" alt="GitHub issues">
@@ -55,7 +55,7 @@ $ pip install tsseg-eval
 
 To reproduce the experiments and results presented in the paper, you need to clone this repository and install the full environment.
 
-We recommend using a Python>3.9 virtual environment with the following dependencies.
+We recommend using a Python>=3.9 virtual environment with the following dependencies.
 
 ```bash
 git clone https://github.com/fchavelli/tsseg-eval.git
@@ -70,7 +70,7 @@ conda activate tsseg-eval
 import numpy as np
 import pandas as pd
 from claspy.segmentation import BinaryClaSPSegmentation
-from tsseg_eval import f1, covering, nmi, ari, wari, sms
+from tsseg_eval import f1, covering, nmi, ari, wari, wnmi, sms
 
 def run_clasp(time_series):
     start_time = time.time()
@@ -157,13 +157,16 @@ After downloading the datasets, move them to the '\data' directory, ensuring the
 ```
 ### Reproduce the experimental results
 
-Run main experiment (flag `multivariate` also includes univariate dataset)
+Run main experiment (flag `multivariate` also includes univariate datasets). Metrics are computed on the fly and written under `results/<type>/score/<algorithm>/<dataset>.csv`.
 
 ```bash
 python src/experiments.py --t multivariate
 ```
 
-Evaluate the algorithms
+Optional filters: `--a <algorithm>` and `--d <dataset>`. Pass `--no-eval` to record only the runtime.
+
+Aggregate the per-dataset CSVs into a summary table (mean / std per metric) at `results/<type>/scores/<algorithm>.csv`:
+
 ```bash
 python src/evaluation.py multivariate
 ```

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsseg-eval"
+version = "0.1.4"
+description = "Evaluation measures for time series segmentation"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Félix Chavelli" }]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "scipy",
+    "scikit-learn",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/fchavelli/tsseg-eval"
+Issues = "https://github.com/fchavelli/tsseg-eval/issues"
+
+[tool.setuptools.packages.find]
+include = ["tsseg_eval*"]
